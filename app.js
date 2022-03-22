@@ -1,7 +1,7 @@
 'use strict'
 
 // ************* Global Variables ****************
-let votingRounds = 15
+let votingRounds = 25
 let array = [];
 
 
@@ -9,26 +9,11 @@ let array = [];
 let imgContainer = document.getElementById('container')
 let img1 = document.getElementById('img1')
 let img2 = document.getElementById('img2');
-// wrote this in and commented out because im not sure which way to go
-// let img3 = document.getElementById('img3');
-// let img4 = document.getElementById('img4');
-// let img5 = document.getElementById('img5');
-// let img6 = document.getElementById('img6');
-// let img7 = document.getElementById('img7');
-// let img8 = document.getElementById('img8');
-// let img9 = document.getElementById('img9');
-// let img10 = document.getElementById('img10');
-// let img11 = document.getElementById('img11');
-// let img12 = document.getElementById('img12');
-// let img13 = document.getElementById('img13');
-// let img14 = document.getElementById('img14');
-// let img15 = document.getElementById('img15');
-// let img16 = document.getElementById('img16');
-// let img17 = document.getElementById('img17');
-// let img18 = document.getElementById('img18');
-// let img19 = document.getElementById('img19');
+let img3 = document.getElementById('img3');
 let resultsBtn = document.getElementById('show-results-btn');
 let resultsList = document.getElementById('display-results-list');
+
+
 // ************ Constructor **************
 function Product(name, fileExtension = 'jpg'){
   this.name = name;
@@ -37,6 +22,91 @@ function Product(name, fileExtension = 'jpg'){
   this.clicks = 0;
   array.push(this);
 }
+
+new Product('bag');
+new Product('banana');
+new Product('bathroom');
+new Product('boots');
+new Product('breakfast');
+new Product('bubblegum');
+new Product('chair');
+new Product('cthulhu');
+new Product('dog-duck');
+new Product('dragon');
+new Product('pen');
+new Product('pet-sweep');
+new Product('scissors');
+new Product('shark');
+new Product('sweep', 'png');
+new Product('tauntaun');
+new Product('unicorn');
+new Product('water-can');
+new Product('wine-glass');
+
+
 // ************ Helper Function **********
+function getRandomIndex(){
+
+  return Math.floor(Math.random()* array.length);
+}
+
+function renderImgs(){
+  let productOneIndex = getRandomIndex();
+  let productTwoIndex = getRandomIndex();
+  let productThreeIndex = getRandomIndex();
+
+  
+  while(productOneIndex === productTwoIndex){
+    productTwoIndex = getRandomIndex();
+  }
+
+  imgOne.src = array[productOneIndex].image;
+  imgOne.alt = array[productOneIndex].name;
+  array[productOneIndex].views++;
+
+  imgTwo.src = array[productTwoIndex].image;
+  imgTwo.alt = array[productTwoIndex].name;
+  goatArray[productTwoIndex].views++;
+
+  imgThree.src = array[productThreeIndex].image;
+  imgThree.alt = array[productThreeIndex].name;
+  array[productTwoIndex].views++;
+}
+
+renderImgs();
+
+
+
 // ********* Event Handlers ************
+function handleClick(event){
+  let imgClicked = event.target.alt;
+
+  for(let i = 0; i < array.length; i++){
+    if(imgClicked === array[i].name){
+      array[i].clicks++;
+    }
+  }
+
+  votingRounds--;
+  if(votingRounds === 0){
+    imgContainer.removeEventListener('click', handleClick);
+    return;
+  }
+
+  renderImgs();
+}
+
+
+function handleShowResults(){
+  if(votingRounds === 0){
+    for(let i = 0; i < array.length; i++){
+      let li = document.createElement('li');
+
+      li.textContent = `${array[i].Name} was viewed ${array[i].views} times and clicked on ${array[i].clicks} times.`;
+      resultsList.appendChild(li);
+    }
+  }
+}
 // ************* Event Listeners *************
+imgContainer.addEventListener('click', handleClick);
+resultsBtn.addEventListener('click', handleShowResults);
