@@ -13,9 +13,10 @@ let img3 = document.getElementById('img3');
 let resultsBtn = document.getElementById('show-results-btn');
 let resultsList = document.getElementById('display-results-list');
 
-
+// canvas/chart element
+let chart = document.getElementById('chart')
 // ************ Constructor **************
-function Product(name, fileExtension = 'jpg'){
+function Product(name, fileExtension = 'jpg') {
   this.name = name;
   this.img = `img/${name}.${fileExtension}`;
   this.views = 0;
@@ -45,50 +46,61 @@ new Product('wine-glass');
 
 
 // ************ Helper Function **********
-function getRandomIndex(){
+function getRandomIndex() {
 
-  return Math.floor(Math.random()* array.length);
+  return Math.floor(Math.random() * array.length);
 }
+let globalArr = [];
+function renderImgs() {
+  while (globalArr.length < 6) {
+    let randomNum = getRandomIndex();
+    if (!globalArr.includes(randomNum)) {
+      globalArr.push(randomNum);
 
-function renderImgs(){
-  let productOneIndex = getRandomIndex();
-  let productTwoIndex = getRandomIndex();
-  let productThreeIndex = getRandomIndex();
-
-  
-  while(productOneIndex === productTwoIndex){
-    productTwoIndex = getRandomIndex();
+    }
   }
+  console.log('before', globalArr);
+  let productOneIndex = globalArr.shift();
+  let productTwoIndex = globalArr.shift();
+  let productThreeIndex = globalArr.shift();
+  console.log('after', globalArr);
 
-  imgOne.src = array[productOneIndex].image;
-  imgOne.alt = array[productOneIndex].name;
+// Stacks - first in last out
+// Queues - first in first out
+
+
+  // while(productOneIndex === productTwoIndex){
+  //   productTwoIndex = getRandomIndex();
+  // }
+
+  img1.src = array[productOneIndex].img;
+  img1.alt = array[productOneIndex].name;
   array[productOneIndex].views++;
 
-  imgTwo.src = array[productTwoIndex].image;
-  imgTwo.alt = array[productTwoIndex].name;
-  goatArray[productTwoIndex].views++;
+  img2.src = array[productTwoIndex].img;
+  img2.alt = array[productTwoIndex].name;
+  array[productTwoIndex].views++;
 
-  imgThree.src = array[productThreeIndex].image;
-  imgThree.alt = array[productThreeIndex].name;
+  img3.src = array[productThreeIndex].img;
+  img3.alt = array[productThreeIndex].name;
   array[productTwoIndex].views++;
 }
 
 renderImgs();
 
 
-
 // ********* Event Handlers ************
-function handleClick(event){
+function handleClick(event) {
   let imgClicked = event.target.alt;
 
-  for(let i = 0; i < array.length; i++){
-    if(imgClicked === array[i].name){
+  for (let i = 0; i < array.length; i++) {
+    if (imgClicked === array[i].name) {
       array[i].clicks++;
     }
   }
 
   votingRounds--;
-  if(votingRounds === 0){
+  if (votingRounds === 0) {
     imgContainer.removeEventListener('click', handleClick);
     return;
   }
@@ -97,9 +109,9 @@ function handleClick(event){
 }
 
 
-function handleShowResults(){
-  if(votingRounds === 0){
-    for(let i = 0; i < array.length; i++){
+function handleShowResults() {
+  if (votingRounds === 0) {
+    for (let i = 0; i < array.length; i++) {
       let li = document.createElement('li');
 
       li.textContent = `${array[i].Name} was viewed ${array[i].views} times and clicked on ${array[i].clicks} times.`;
@@ -110,3 +122,43 @@ function handleShowResults(){
 // ************* Event Listeners *************
 imgContainer.addEventListener('click', handleClick);
 resultsBtn.addEventListener('click', handleShowResults);
+
+
+// *************** chart ****************
+
+let myChart = new Chart(chart, {
+    type: 'bar',
+    data: {
+        labels: array,
+
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        },
+      ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
