@@ -14,7 +14,8 @@ let resultsBtn = document.getElementById('show-results-btn');
 let resultsList = document.getElementById('display-results-list');
 
 // canvas/chart element
-let chart = document.getElementById('chart')
+let chart = document.getElementById('chart');
+let chart2 = document.getElementById('chart2');
 // ************ Constructor **************
 function Product(name, fileExtension = 'jpg') {
   this.name = name;
@@ -110,13 +111,17 @@ function handleClick(event) {
 
 
 function handleShowResults() {
+  console.log('test');
   if (votingRounds === 0) {
-    for (let i = 0; i < array.length; i++) {
-      let li = document.createElement('li');
+    // for (let i = 0; i < array.length; i++) {
+      // let li = document.createElement('li');
 
-      li.textContent = `${array[i].Name} was viewed ${array[i].views} times and clicked on ${array[i].clicks} times.`;
-      resultsList.appendChild(li);
-    }
+      // li.textContent = `${array[i].name} was viewed ${array[i].views} times and clicked on ${array[i].clicks} times.`;
+      // resultsList.appendChild(li);
+    // }
+    // ****** chart render *******
+    renderClicksChart();
+    renderViewsChart();
   }
 }
 // ************* Event Listeners *************
@@ -125,40 +130,94 @@ resultsBtn.addEventListener('click', handleShowResults);
 
 
 // *************** chart ****************
+function createLabelsArr(){
+  let labelsArr = [];
+  for (let i = 0; i < array.length; i++){
+    labelsArr.push(array[i].name)
+  }
+return labelsArr;
+}
 
-let myChart = new Chart(chart, {
+function createClicksArr(){
+  let clicksArr = [];
+  for (let i = 0; i < array.length; i++){
+    clicksArr.push(array[i].clicks)
+  }
+  return clicksArr;
+}
+
+function createViewsArr(){
+  let viewArr = [];
+  for (let i = 0; i < array.length; i++){
+    viewArr.push(array[i].views)
+  }
+  return viewArr;
+}
+
+
+
+function renderClicksChart(){
+
+
+  let myChart = new Chart(chart, {
     type: 'bar',
     data: {
-        labels: array,
-
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        },
-      ]
+      labels: createLabelsArr(),
+      datasets: [{
+        label: '# of Votes',
+        data: createClicksArr(),
+        backgroundColor: [
+          'rgba(153, 102, 255, 0.2)',
+        ],
+        borderColor: [
+          'rgba(153, 102, 255, 1)',
+        ],
+        borderWidth: 1
+      }]
     },
+          
     options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+            beginAtZero: true
         }
+      }
     }
-});
+  })
+}
+
+function renderViewsChart(){
+  let myChart2 = new Chart(chart2, {
+    type: 'bar',
+    data: {
+      labels: createLabelsArr(),
+      datasets: [{
+        label: '# of Views',
+        data: createViewsArr(),
+        backgroundColor: [
+          'rgba(153, 102, 255, 0.2)',
+        ],
+        borderColor: [
+          'rgba(153, 102, 255, 1)',
+        ],
+        borderWidth: 1
+      }]
+    },
+          
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+ 
+            beginAtZero: true  
+            // got from TA.
+          
+        }
+      }
+    }
+  })
+
+}
