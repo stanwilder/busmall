@@ -1,0 +1,26 @@
+body {
+  background-color: aqua;
+}
+h1 {
+  font-size: 35px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+ #show-results-btn {
+   padding: 15px 15px;
+   width: 135px;
+   font-family: Georgia, 'Times New Roman', Times, serif;
+   background-color: rgba(0,200,200,.3);
+  }
+  
+  #show-results-btn:hover {
+    transition: 500ms;
+    background-color: crimson;
+}
+
+#container img {
+  transform: scale();
+  height: 200x;
+  width: 300px;
+  padding: 15px;
+}
+
