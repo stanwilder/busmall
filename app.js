@@ -16,6 +16,15 @@ let resultsList = document.getElementById('display-results-list');
 // canvas/chart element
 let chart = document.getElementById('chart');
 let chart2 = document.getElementById('chart2');
+
+// Local storage part 2?
+let getProduct = localStorage.getItem('product');
+
+let parsedProduct = JSON.parse(getProduct);
+
+
+
+
 // ************ Constructor **************
 function Product(name, fileExtension = 'jpg') {
   this.name = name;
@@ -24,7 +33,18 @@ function Product(name, fileExtension = 'jpg') {
   this.clicks = 0;
   array.push(this);
 }
-
+// **************** local storage part 3? *****************
+for(let i = 0; i < array.length; i++){
+    if(parsedProduct[i].name === 'sweep'){
+      let reconstructedArr = new Product(parsedProduct[i].name, 'png');
+      reconstructedArr.views = parsedarray[i].views;
+      reconstructedArr.clicks = parsedarray[i].clicks;
+    } else{
+      let reconstructedArray = new Product(parsedarray[i].name);
+      reconstructed.views = parsedarray[i].views;
+      reconstructed.clicks = parsedarray[i].clicks;
+    }
+  }
 new Product('bag');
 new Product('banana');
 new Product('bathroom');
@@ -221,3 +241,5 @@ function renderViewsChart(){
   })
 
 }
+let stringifiedArray = JSON.stringify(array)
+localStorage.setItem('product', stringifiedArray); 

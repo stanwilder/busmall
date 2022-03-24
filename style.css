@@ -4,6 +4,8 @@ body {
 h1 {
   font-size: 35px;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+
 }
  #show-results-btn {
    padding: 15px 15px;
